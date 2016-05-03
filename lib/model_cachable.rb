@@ -3,6 +3,7 @@ require 'virtus'
 
 require "model_cachable/configuration"
 require "model_cachable/find"
+require "model_cachable/save"
 require "model_cachable/base"
 
 module ModelCachable
