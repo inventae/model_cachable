@@ -1,12 +1,20 @@
 module ModelCachable
   module Find
+    def find_in_repo( id )
+      obj_attributes = self.repo.find( id ).attributes
+      ModelCachable.configuration.cache.set( self.key + ":#{id}", obj_attributes )
+      return obj_attributes
+    end
+
+    def find_in_remote(id)
+      return ModelCachable.configuration.transport.get("#{ self.queue_url}/#{id}")
+    end
+
     def find_repo_or_remote(id)
       if self.repo.nil?
-        return ModelCachable.configuration.transport.get("#{ self.queue_url}/#{id}")
+        find_in_remote( id )
       else
-        obj_attributes = self.repo.find( id ).attributes
-        ModelCachable.configuration.cache.set( self.key + ":#{id}", obj_attributes )
-        return obj_attributes
+        find_in_repo( id )
       end
     end
 
