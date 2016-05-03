@@ -20,6 +20,7 @@ class Buu
   end
 
   def self.save(attributes)
+    attributes[:id] = 1
     return new(attributes)
   end
 
