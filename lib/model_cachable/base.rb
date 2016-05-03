@@ -4,15 +4,19 @@ module ModelCachable
     extend ModelCachable::Find
 
     def self.repo
-      ModelCachable.configuration.get_klass( self )
+      @repo ||= ModelCachable.configuration.get_klass( self )
+    end
+
+    def self.repo=(repo)
+      @repo = repo
     end
 
     def self.key
-      ModelCachable.configuration.get_cache_key( self )
+      @key ||= ModelCachable.configuration.get_cache_key( self )
     end
 
     def self.queue_url
-      ModelCachable.configuration.get_queue_url( self )
+      @queue_url ||= ModelCachable.configuration.get_queue_url( self )
     end
 
     def key

@@ -39,6 +39,7 @@ module ModelCachable
         allow( ModelCachable.configuration.cache ).to receive(:set).and_return(true)
         allow( ModelCachable.configuration.transport ).to receive(:get).with("amqp://queue.users/users/1").and_return({ 'id': 1, 'name': 'test' })
 
+        ModelCachable::Foo.repo = nil
         foo = ModelCachable::Foo.find(1)
 
         expect( ModelCachable.configuration.transport ).to have_received(:get).with("amqp://queue.users/users/1")
