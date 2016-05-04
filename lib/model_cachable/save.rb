@@ -41,7 +41,7 @@ module ModelCachable
       if self.id.nil?
         {}.merge!( get_class_name_stringfy.to_sym => self.attributes )
       else
-        {id: self.id}.merge!( get_class_name_stringfy.to_sym => self.attributes )
+        { id: self.id }.merge!( get_class_name_stringfy.to_sym => self.attributes )
       end
     end
 
