@@ -34,7 +34,8 @@ module ModelCachable
 
   private
     def get_class_name_stringfy
-      self.class.to_s.split("::").last.downcase
+      # binding.pry
+      self.class.name.split("::").last.downcase
     end
 
     def build_params
