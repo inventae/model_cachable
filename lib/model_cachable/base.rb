@@ -2,6 +2,7 @@ module ModelCachable
   class Base
     include Virtus.model
     extend ModelCachable::Find
+    include ModelCachable::Save
 
     def self.repo
       @repo ||= ModelCachable.configuration.get_klass( self )

@@ -28,16 +28,26 @@ class Buu < Tableless
   column :id, :integer
   column :name, :string
 
-  def attributes
-    { id: 1, name: "test" }
+  def initialize(attributes={})
+    attributes.each{|k,v| self.send("#{k}=", v) }
+  end
+
+  def attributes(attributes={})
+    { id: 1, name: self.name }
   end
 
   def self.find(id)
     return new
   end
+
+  def self.save(attributes)
+    attributes[:id] = 1
+    return new(attributes)
+  end
+
 end
 
-class ModelCachable::Foo < ModelCachable::Base;
+class ModelCachable::Foo < ModelCachable::Base
   attribute :id, Integer
   attribute :name, String
 end
