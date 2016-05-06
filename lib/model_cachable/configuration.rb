@@ -6,7 +6,7 @@ module ModelCachable
     attr_accessor :transport
 
     def get_klass( klass )
-      Object.const_get( get_item(klass)[:repo] )
+      repo = Object.const_get( get_item(klass)[:repo] )
     rescue NameError => e
       nil
     end
