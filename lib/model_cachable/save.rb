@@ -11,21 +11,22 @@ module ModelCachable
     end
 
     def save_in_repo( attributes )
-      obj_from_repo = self.repo.save( attributes )
-      self.id = obj_from_repo.id
-      return obj_from_repo
+      obj = self.repo.new( attributes )
+      if obj.save
+        return obj.attributes
+      else
+        return {} # "TODO: ERROR VALIDACAO"
+      end
     end
 
     def save
-
       if self.repo.nil?
-        resource = save_in_remote( build_params )
+        attributes = save_in_remote( self.attributes )
       else
-        resource = save_in_repo( self.attributes )
+        attributes = save_in_repo( self.attributes )
+        set_in_cache
       end
-
-      set_in_cache
-      resource
+      self.attributes =  attributes
     end
 
     def set_in_cache
@@ -38,22 +39,16 @@ module ModelCachable
       self.class.name.split("::").last.downcase
     end
 
-    def build_params
-      if self.id.nil?
-        {}.merge!( get_class_name_stringfy.to_sym => self.attributes )
-      else
-        { id: self.id }.merge!( get_class_name_stringfy.to_sym => self.attributes )
-      end
+    def build_params(attributes)
+      { get_class_name_stringfy.to_sym => attributes }
     end
 
-    def post(params)
-      resource = ModelCachable.configuration.transport.post("#{ self.class.queue_url }", params)
-      self.id = resource[:id]
-      return
+    def post(attributes)
+      return ModelCachable.configuration.transport.post("#{ self.class.queue_url }", build_params(attributes))
     end
 
-    def put(params)
-      return ModelCachable.configuration.transport.put("#{ self.class.queue_url }/#{params[:id]}", params)
+    def put(attributes)
+      return ModelCachable.configuration.transport.put("#{ self.class.queue_url }/#{attributes[:id]}", build_params(attributes))
     end
 
   end

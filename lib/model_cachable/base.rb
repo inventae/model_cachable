@@ -2,6 +2,8 @@ module ModelCachable
   class Base
     include Virtus.model
     extend ModelCachable::Find
+    extend ModelCachable::All
+    extend ModelCachable::Where
     include ModelCachable::Save
 
     def self.repo
