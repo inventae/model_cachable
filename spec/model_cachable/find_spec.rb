@@ -17,6 +17,7 @@ module ModelCachable
         allow( ModelCachable.configuration.cache ).to receive(:get).with("foo:1").and_return(nil)
         allow( ModelCachable.configuration.cache ).to receive(:set).and_return(true)
 
+        FactoryGirl.create(:buu, id: 1)
         foo = ModelCachable::Foo.find(1)
         expect( foo.id ).to eq( 1 )
       end

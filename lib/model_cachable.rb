@@ -1,5 +1,6 @@
 require 'json'
 require 'virtus'
+require 'active_support'
 
 require "model_cachable/configuration"
 require "model_cachable/find"

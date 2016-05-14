@@ -13,6 +13,7 @@ module ModelCachable
     def save_in_repo( attributes )
       obj = self.repo.new( attributes )
       if obj.save
+        # TODO: Limpar o cache da busca e do find no save e no delete
         return obj.attributes
       else
         return {} # "TODO: ERROR VALIDACAO"
@@ -35,7 +36,6 @@ module ModelCachable
 
   private
     def get_class_name_stringfy
-      # binding.pry
       self.class.name.split("::").last.downcase
     end
 

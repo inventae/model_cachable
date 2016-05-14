@@ -18,7 +18,9 @@ module ModelCachable
         allow( ModelCachable.configuration.cache ).to receive(:get).with("foo:query:a6e0da24541e45b0f7e6305e63663da61709b6a5").and_return(nil)
         allow( ModelCachable.configuration.cache ).to receive(:set).and_return(true)
 
+        FactoryGirl.create_list(:buu, 2)
         foos = ModelCachable::Foo.all
+
         expect( foos.length ).to eq( 2 )
       end
 
@@ -42,12 +44,12 @@ module ModelCachable
         allow( ModelCachable.configuration.cache ).to receive(:get).with("foo:2").and_return({ 'id': 2, 'name': 'test' }.to_json)
         allow( ModelCachable.configuration.cache ).to receive(:get).with("foo:query:a6e0da24541e45b0f7e6305e63663da61709b6a5").and_return(nil)
         allow( ModelCachable.configuration.cache ).to receive(:set).and_return(true)
-        allow( ModelCachable.configuration.transport ).to receive(:get).with("amqp://queue.users/users").and_return([1,2])
+        allow( ModelCachable.configuration.transport ).to receive(:get).with("amqp://queue.users/users", { query: {}}).and_return([1,2])
 
         ModelCachable::Foo.repo = nil
         foos = ModelCachable::Foo.all
 
-        expect( ModelCachable.configuration.transport ).to have_received(:get).with("amqp://queue.users/users")
+        expect( ModelCachable.configuration.transport ).to have_received(:get).with("amqp://queue.users/users", { query: {} })
         expect( foos.length ).to eq( 2 )
       end
     end
