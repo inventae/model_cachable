@@ -11,7 +11,7 @@ module ModelCachable
 
     def get_klass( klass )
       repo = Object.const_get( get_item(klass)[:repo] )
-    rescue NameError => e
+    rescue Exception => e
       nil
     end
 
