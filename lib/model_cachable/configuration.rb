@@ -5,6 +5,10 @@ module ModelCachable
     attr_accessor :dictionary
     attr_accessor :transport
 
+    def initialize(attributes={})
+      attributes.each{|k,v| self.send("#{k}=", v) }
+    end
+
     def get_klass( klass )
       repo = Object.const_get( get_item(klass)[:repo] )
     rescue NameError => e
