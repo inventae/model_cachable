@@ -1,8 +1,8 @@
 module ModelCachable
   module Find
     def find_in_repo( id )
-      obj_attributes = self.repo.find( id ).attributes.to_json
-      ModelCachable.configuration.cache.set( self.key + ":#{id}", obj_attributes )
+      obj_attributes = self.repo.find( id ).attributes
+      ModelCachable.configuration.cache.set( self.key + ":#{id}", obj_attributes.to_json )
       return obj_attributes
     end
 
