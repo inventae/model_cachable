@@ -16,13 +16,21 @@ module ModelCachable
     end
 
     def get( url, options={})
-      options.merge!({ headers: headers })
+      access_token = nil
+      cookies = Thread.current[:request].try(:cookies)
+      if !cookies.nil? && !cookies[:_access_token].nil?
+        access_token = JSON.parse(URI.unescape(cookies[:_access_token]))["access_token"]
+      end
+
+      options[:query] ||= {}
+      options[:query][:access_token] = access_token
+
+      options.merge!(headers)
       ModelCachable.configuration.transport.get( url, options )
     end
 
     def headers
       {
-        "Cookie" => (Thread.current[:request].try(:cookies) || []).map{|k,v| "#{k}=#{v}" }.join("; "),
         'Content-Type' => 'application/json',
         "Accept" => "application/json"
       }
