@@ -27,5 +27,23 @@ module ModelCachable
       end
       self.new( cache_obj )
     end
+
+    def first
+      id = if self.repo.nil?
+        ModelCachable.configuration.transport.get("#{ self.queue_url}/first")
+      else
+        self.repo.first.try(:id)
+      end
+      find(id) unless id.nil?
+    end
+
+    def last
+      id = if self.repo.nil?
+        ModelCachable.configuration.transport.get("#{ self.queue_url}/last")
+      else
+        self.repo.last.try(:id)
+      end
+      find(id) unless id.nil?
+    end
   end
 end
