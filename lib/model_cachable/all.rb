@@ -10,7 +10,7 @@ module ModelCachable
 
     def find_all_in_remote
       q = (scope.empty? ? {} : { q: Hash[*scope.flatten] })
-      ids = ModelCachable.configuration.transport.get("#{self.queue_url}", { query: q })
+      ids = ModelCachable.configuration.get("#{self.queue_url}", { query: q })
       return ids
     end
 

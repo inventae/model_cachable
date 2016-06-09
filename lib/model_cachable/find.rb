@@ -7,7 +7,7 @@ module ModelCachable
     end
 
     def find_in_remote(id)
-      return ModelCachable.configuration.transport.get("#{ self.queue_url}/#{id}")
+      return ModelCachable.configuration.get("#{ self.queue_url}/#{id}")
     end
 
     def find_repo_or_remote(id)
@@ -30,7 +30,7 @@ module ModelCachable
 
     def first
       id = if self.repo.nil?
-        ModelCachable.configuration.transport.get("#{ self.queue_url}/first")
+        ModelCachable.configuration.get("#{ self.queue_url}/first")
       else
         self.repo.first.try(:id)
       end
@@ -39,7 +39,7 @@ module ModelCachable
 
     def last
       id = if self.repo.nil?
-        ModelCachable.configuration.transport.get("#{ self.queue_url}/last")
+        ModelCachable.configuration.get("#{ self.queue_url}/last")
       else
         self.repo.last.try(:id)
       end
@@ -48,7 +48,7 @@ module ModelCachable
 
     def count
       count = if self.repo.nil?
-        ModelCachable.configuration.transport.get("#{ self.queue_url}/count").to_i
+        ModelCachable.configuration.get("#{ self.queue_url}/count").to_i
       else
         self.repo.count
       end

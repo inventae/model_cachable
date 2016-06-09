@@ -15,6 +15,19 @@ module ModelCachable
       nil
     end
 
+    def get( url, options={})
+      options.merge!({ headers: headers })
+      ModelCachable.configuration.transport.get( url, options )
+    end
+
+    def headers
+      {
+        "Cookie" => (Thread.current[:request].try(:cookies) || []).map{|k,v| "#{k}=#{v}" }.join("; "),
+        'Content-Type' => 'application/json',
+        "Accept" => "application/json"
+      }
+    end
+
     def get_queue_url( klass )
       get_item(klass)[:amqp_url]
     end
