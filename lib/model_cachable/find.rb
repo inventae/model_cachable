@@ -48,7 +48,7 @@ module ModelCachable
 
     def count
       count = if self.repo.nil?
-        ModelCachable.configuration.transport.get("#{ self.queue_url}/count")
+        ModelCachable.configuration.transport.get("#{ self.queue_url}/count").to_i
       else
         self.repo.count
       end
