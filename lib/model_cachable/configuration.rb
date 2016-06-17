@@ -17,9 +17,9 @@ module ModelCachable
 
     def get( url, options={})
       access_token = nil
-      cookies = Thread.current[:request].try(:cookies)
+      cookies = Thread.current[:request].try(:session)
       if !cookies.nil? && !cookies[:_access_token].nil?
-        access_token = JSON.parse(URI.unescape(cookies[:_access_token]))["access_token"]
+        access_token = cookies[:_access_token][:access_token]
       end
 
       options[:query] ||= {}
